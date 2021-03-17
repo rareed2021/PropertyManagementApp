@@ -8,19 +8,25 @@ import com.test.propertymanagementapp.data.models.AuthResponse
 import com.test.propertymanagementapp.data.models.RegistrationUser
 import com.test.propertymanagementapp.data.models.User
 import com.test.propertymanagementapp.data.network.PropertyApi
+import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import org.reactivestreams.Subscriber
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class AuthRepository @Inject constructor(val remoteData:AuthRemoteDataSource, val localData: AuthLocalDataSource) {
     fun login(email:String,password:String) : Single<AuthResponse> = remoteData.login(email, password)
+        .doOnSuccess {  }
             .map { handleResult(it,localData::login)}
 
     fun register(user: RegistrationUser) = remoteData.register(user)
             .map { handleResult(it,localData::register) }
+
+    val user:User?=localData.currentUser
 
 
     companion object{
@@ -30,6 +36,7 @@ class AuthRepository @Inject constructor(val remoteData:AuthRemoteDataSource, va
                 Log.d("myapp","Result is not error")
                 Thread {
                     kotlin.run {
+                        Observable.interval(30,TimeUnit.SECONDS)
                         val user = response.user
                         if (user != null)
                             successCallback(user)
@@ -71,6 +78,7 @@ class AuthRemoteDataSource @Inject constructor(private val api:PropertyApi) {
             .observeOn(AndroidSchedulers.mainThread())
 }
 
+
 class AuthLocalDataSource @Inject constructor(private val prefs: SharedPreferences,
                                               private val userDao:UserDao
 ){
@@ -83,4 +91,11 @@ class AuthLocalDataSource @Inject constructor(private val prefs: SharedPreferenc
         prefs.edit().putString(Config.CURRENT_USER_KEY,user._id).apply()
         userDao.addUser(user)
     }
+    val currentUser:User?
+        get(){
+            val uid = prefs.getString(Config.CURRENT_USER_KEY, null)
+            return uid?.let {
+                userDao.getUser(uid)
+            }
+        }
 }
