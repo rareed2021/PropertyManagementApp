@@ -18,25 +18,32 @@ import org.reactivestreams.Subscriber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class AuthRepository @Inject constructor(val remoteData:AuthRemoteDataSource, val localData: AuthLocalDataSource) {
-    fun login(email:String,password:String) : Single<AuthResponse> = remoteData.login(email, password)
-        .doOnSuccess {  }
-            .map { handleResult(it,localData::login)}
+class AuthRepository @Inject constructor(
+    private val remoteData: AuthRemoteDataSource,
+    private val localData: AuthLocalDataSource
+) {
+    fun login(email: String, password: String): Single<AuthResponse> =
+        remoteData.login(email, password)
+            .doOnSuccess { handleResult(it, localData::login) }
 
     fun register(user: RegistrationUser) = remoteData.register(user)
-            .map { handleResult(it,localData::register) }
+        .doOnSuccess { handleResult(it, localData::register) }
 
-    val user:User?=localData.currentUser
+    val user: User?
+        get() = localData.currentUser
 
 
-    companion object{
-        private fun handleResult(response:AuthResponse, successCallback: (User)->Unit):AuthResponse{
-            Log.d("myapp","Handling result")
-            if(!response.error){
-                Log.d("myapp","Result is not error")
+    companion object {
+        private fun handleResult(
+            response: AuthResponse,
+            successCallback: (User) -> Unit
+        ): AuthResponse {
+            Log.d("myapp", "Handling result")
+            if (!response.error) {
+                Log.d("myapp", "Result is not error")
                 Thread {
                     kotlin.run {
-                        Observable.interval(30,TimeUnit.SECONDS)
+                        Observable.interval(30, TimeUnit.SECONDS)
                         val user = response.user
                         if (user != null)
                             successCallback(user)
@@ -46,14 +53,16 @@ class AuthRepository @Inject constructor(val remoteData:AuthRemoteDataSource, va
             return response
         }
     }
-    inner class AuthResponseObserver(val successCallback: (User)->Unit):SingleObserver<AuthResponse>{
+
+    inner class AuthResponseObserver(val successCallback: (User) -> Unit) :
+        SingleObserver<AuthResponse> {
         override fun onSubscribe(d: Disposable) {
         }
 
         override fun onSuccess(t: AuthResponse) {
-            if(! t.error){
+            if (!t.error) {
                 val user = t.user
-                if(user!=null) {
+                if (user != null) {
                     successCallback(user)
                 }
             }
@@ -66,33 +75,36 @@ class AuthRepository @Inject constructor(val remoteData:AuthRemoteDataSource, va
     }
 }
 
-class AuthRemoteDataSource @Inject constructor(private val api:PropertyApi) {
-    fun login(email:String,password:String):Single<AuthResponse>{
-        return api.login(RegistrationUser(email=email,password = password))
+class AuthRemoteDataSource @Inject constructor(private val api: PropertyApi) {
+    fun login(email: String, password: String): Single<AuthResponse> {
+        return api.login(RegistrationUser(email = email, password = password))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
 
     fun register(user: RegistrationUser) = api.register(user)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
 }
 
 
-class AuthLocalDataSource @Inject constructor(private val prefs: SharedPreferences,
-                                              private val userDao:UserDao
-){
-    fun login(user:User){
-            Log.d("myapp", "Logged in: ${user._id}")
-            prefs.edit().putString(Config.CURRENT_USER_KEY, user._id).apply()
-            userDao.addUser(user)
-    }
-    fun register(user:User){
-        prefs.edit().putString(Config.CURRENT_USER_KEY,user._id).apply()
+class AuthLocalDataSource @Inject constructor(
+    private val prefs: SharedPreferences,
+    private val userDao: UserDao
+) {
+    fun login(user: User) {
+        Log.d("myapp", "Logged in: ${user._id}")
+        prefs.edit().putString(Config.CURRENT_USER_KEY, user._id).apply()
         userDao.addUser(user)
     }
-    val currentUser:User?
-        get(){
+
+    fun register(user: User) {
+        prefs.edit().putString(Config.CURRENT_USER_KEY, user._id).apply()
+        userDao.addUser(user)
+    }
+
+    val currentUser: User?
+        get() {
             val uid = prefs.getString(Config.CURRENT_USER_KEY, null)
             return uid?.let {
                 userDao.getUser(uid)

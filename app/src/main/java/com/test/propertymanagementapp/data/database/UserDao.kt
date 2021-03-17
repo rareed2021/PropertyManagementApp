@@ -10,7 +10,7 @@ import com.test.propertymanagementapp.data.models.User
 interface UserDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun addUser(user: User):Int
+    fun addUser(user: User):Long
 
     @Query("select * from User where _id = :id")
     fun getUser(id:String):User?
