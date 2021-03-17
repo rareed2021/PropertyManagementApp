@@ -12,7 +12,7 @@ class CustomApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         component = DaggerAppComponent.builder()
-            .appModule(AppModule())
+            .appModule(AppModule(applicationContext))
             .viewModelModule(ViewModelModule(applicationContext))
             .build()
     }

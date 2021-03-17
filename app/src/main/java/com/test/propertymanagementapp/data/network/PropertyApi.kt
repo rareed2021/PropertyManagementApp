@@ -10,7 +10,7 @@ import retrofit2.http.POST
 
 interface PropertyApi {
     @POST("auth/login")
-    fun login(@Body user: User): Single<AuthResponse>
+    fun login(@Body user: RegistrationUser): Single<AuthResponse>
 
     @POST("auth/register")
     fun register(@Body user:RegistrationUser): Single<AuthResponse>

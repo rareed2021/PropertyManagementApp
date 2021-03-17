@@ -2,9 +2,12 @@ package com.test.propertymanagementapp.di.modules
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.room.Room
 import com.test.propertymanagementapp.di.annotations.ApplicationScope
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.test.propertymanagementapp.app.Config
+import com.test.propertymanagementapp.data.database.Database
+import com.test.propertymanagementapp.data.database.UserDao
 import com.test.propertymanagementapp.data.network.PropertyApi
 import com.test.propertymanagementapp.ui.auth.AuthValidator
 import dagger.Module
@@ -14,7 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 @Module
-class AppModule() {
+class AppModule(val applicationContext: Context) {
 
     @Provides
     @ApplicationScope
@@ -36,6 +39,18 @@ class AppModule() {
     @ApplicationScope
     fun providesPropertyApi(retrofit: Retrofit):PropertyApi{
         return retrofit.create(PropertyApi::class.java)
+    }
+
+    @Provides
+    @ApplicationScope
+    fun providesDatabase():Database{
+        return Room.databaseBuilder(applicationContext, Database::class.java,Config.DATABASE_NAME)
+            .build()
+    }
+
+    @Provides
+    fun providesUserDao(db:Database):UserDao{
+        return db.getUserDao()
     }
 
 //    @Provides

@@ -3,6 +3,7 @@ package com.test.propertymanagementapp.data.repositories
 import android.content.SharedPreferences
 import android.util.Log
 import com.test.propertymanagementapp.app.Config
+import com.test.propertymanagementapp.data.database.UserDao
 import com.test.propertymanagementapp.data.models.AuthResponse
 import com.test.propertymanagementapp.data.models.RegistrationUser
 import com.test.propertymanagementapp.data.models.User
@@ -24,10 +25,16 @@ class AuthRepository @Inject constructor(val remoteData:AuthRemoteDataSource, va
 
     companion object{
         private fun handleResult(response:AuthResponse, successCallback: (User)->Unit):AuthResponse{
+            Log.d("myapp","Handling result")
             if(!response.error){
-                val user = response.user
-                if(user!=null)
-                    successCallback(user)
+                Log.d("myapp","Result is not error")
+                Thread {
+                    kotlin.run {
+                        val user = response.user
+                        if (user != null)
+                            successCallback(user)
+                    }
+                }.start()
             }
             return response
         }
@@ -53,21 +60,27 @@ class AuthRepository @Inject constructor(val remoteData:AuthRemoteDataSource, va
 }
 
 class AuthRemoteDataSource @Inject constructor(private val api:PropertyApi) {
-    fun login(email:String,password:String)=api.login(User(email=email,password = password))
+    fun login(email:String,password:String):Single<AuthResponse>{
+        return api.login(RegistrationUser(email=email,password = password))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+    }
 
     fun register(user: RegistrationUser) = api.register(user)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 }
 
-class AuthLocalDataSource @Inject constructor(private val prefs: SharedPreferences){
+class AuthLocalDataSource @Inject constructor(private val prefs: SharedPreferences,
+                                              private val userDao:UserDao
+){
     fun login(user:User){
-        Log.d("myapp","Logged in: ${user._id}")
-        prefs.edit().putString(Config.CURRENT_USER_KEY, user._id).apply()
+            Log.d("myapp", "Logged in: ${user._id}")
+            prefs.edit().putString(Config.CURRENT_USER_KEY, user._id).apply()
+            userDao.addUser(user)
     }
     fun register(user:User){
         prefs.edit().putString(Config.CURRENT_USER_KEY,user._id).apply()
+        userDao.addUser(user)
     }
 }
