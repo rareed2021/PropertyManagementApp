@@ -15,13 +15,8 @@ import io.reactivex.disposables.Disposable
 
 class AuthViewModel(private val repository: AuthRepository, private val validator: AuthValidator)  : ViewModel(){
     val user = RegistrationUser()
-//    val email = MutableLiveData<String>().apply { value="" }
-//    val password = MutableLiveData<String>().apply { value="" }
     val confirmPassword = MutableLiveData<String>().apply { value="" }
-//    val name = MutableLiveData<String>().apply { value="" }
-//    val landlordEmail = MutableLiveData<String>().apply { value="" }
     val accountType = MutableLiveData<AccountType>().apply { value=AccountType.tenant }
-//    val showLandLordEmail = accountType.map { it==AccountType.tenant}
     val errorMessage =  MutableLiveData<String>().apply { value="" }
     val currentAction = MutableLiveData<AuthAction>().apply{value=AuthAction.PENDING}
 
@@ -32,31 +27,19 @@ class AuthViewModel(private val repository: AuthRepository, private val validato
 //        val email = email.value
         val email = user.email
         val password = user.password
+        val user = user
         Log.d("myapp","Checking Login")
-        if(!email.isNullOrBlank() && !password.isNullOrBlank()) {
-            Log.d("myapp", "Trying Login")
-            val foo = repository.login(email, password)
+        val result = validator.validateLogin(user)
+        if(result==AuthValidationResult.Success) {
+            //should be safe to cast because validator checks
+            repository.login(email!!, password!!)
                 .subscribe(AuthObserver(AuthAction.LOGIN))
+        }else{
+            errorMessage.value = result.message
         }
     }
 
 
-
-//
-//    private fun validateRegister(checkTenant:Boolean=false):Boolean{
-//        errorMessage.value = when{
-//            email.value.isNullOrBlank()->"Please provide email"
-//            password.value.isNullOrBlank() ->"Password must not be blank"
-//            name.value.isNullOrBlank() -> "Please provide name"
-//            checkTenant && landlordEmail.value.isNullOrBlank() -> "Please provide landlord email"
-//            confirmPassword.value != password.value -> "Passwords do not match"
-//            else->{
-//                errorMessage.value=""
-//                return true
-//            }
-//        }
-//        return false
-//    }
 
     fun registerUser(view:View){
         Log.d("myapp","Begining registration")
@@ -79,13 +62,11 @@ class AuthViewModel(private val repository: AuthRepository, private val validato
                 password = password,
                 email = email,
                 landlordEmail = landlordEmail,
-                type = accountType.value
+                type = type
             )
-            Log.d("myapp","About to register")
-            Log.d("myapp","User is $user")
             repository.register(user)
                 .subscribe(AuthObserver(AuthAction.REGISTER))
-        }else if (result is AuthValidationResult.ValidationError){
+        }else{
             errorMessage.value = result.message
         }
     }
