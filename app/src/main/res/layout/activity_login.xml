@@ -1,0 +1,53 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="viewmodel"
+            type="com.test.propertymanagementapp.ui.auth.AuthViewModel" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Sign In"
+            android:textSize="20sp"
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/edit_email"
+            android:hint="@string/edit_register_name"
+            android:inputType="textEmailAddress"
+            android:text="@={viewmodel.user.email}"
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/edit_password"
+            android:hint="@string/edit_register_password"
+            android:inputType="textPassword"
+            android:autofillHints="password"
+            android:text="@={viewmodel.user.password}"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/attention_text"
+            android:text="@{viewmodel.errorMessage}"
+            />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_login"
+            android:onClick="@{viewmodel::loginButtonClick}"
+            android:background="@drawable/arrow_background"
+            android:layout_gravity="center"
+            android:textColor="@color/content"
+            android:text="Sign In"
+            />
+    </LinearLayout>
+</layout>

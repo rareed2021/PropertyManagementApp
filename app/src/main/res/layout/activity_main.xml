@@ -1,0 +1,52 @@
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="viewmodel"
+            type="com.test.propertymanagementapp.ui.auth.AuthViewModel" />
+    </data>
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_login"
+        android:background="@drawable/arrow_background"
+        android:layout_gravity="center"
+        android:textColor="@color/content"
+        android:paddingEnd="50dp"
+        android:paddingStart="50dp"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintBottom_toTopOf="@id/button_register"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="16dp"
+        android:text="Sign In"
+        />
+   <!-- <androidx.constraintlayout.widget.Guideline
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5"
+        android:id="@+id/guide_center"
+        />-->
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_register"
+        android:text="Register"
+        android:background="@drawable/arrow_background"
+        app:layout_constraintVertical_chainStyle="packed"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/button_login"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/content"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

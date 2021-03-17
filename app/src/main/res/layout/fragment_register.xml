@@ -1,0 +1,76 @@
+<layout xmlns:viewmodel="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="viewmodel"
+            type="com.test.propertymanagementapp.ui.auth.AuthViewModel" />
+        <variable
+            name="showLandlordEmail"
+            type="Boolean" />
+    </data>
+
+    <LinearLayout android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/edit_register_name"
+            android:id="@+id/edit_name"
+            android:inputType="textPersonName"
+            android:autofillHints="personName"
+            android:text="@={viewmodel.user.name}"
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/edit_register_landlord"
+            android:id="@+id/edit_landlord"
+            android:inputType="textEmailAddress"
+            android:autofillHints="emailAddress"
+            android:customVisibility="@{showLandlordEmail}"
+            android:text="@={viewmodel.user.landlordEmail}"
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/edit_register_email"
+            android:id="@+id/edit_email"
+            android:inputType="textEmailAddress"
+            android:autofillHints="emailAddress"
+            android:text="@={viewmodel.user.email}"
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/edit_register_password"
+            android:id="@+id/edit_password"
+            android:inputType="textPassword"
+            android:autofillHints="no"
+            android:text="@={viewmodel.user.password}"
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/edit_register_confirm_password"
+            android:id="@+id/edit_confirm_password"
+            android:inputType="textPassword"
+            android:text="@={viewmodel.confirmPassword}"
+            android:autofillHints="no" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/attention_text"
+            android:text="@={viewmodel.errorMessage}"
+            />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/arrow_background"
+            android:text="@string/register_button"
+            android:onClick="@{viewmodel::registerUser}"
+            android:textColor="@color/content"
+            />
+    </LinearLayout>
+</layout>
