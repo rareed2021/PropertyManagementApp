@@ -11,9 +11,11 @@ class CustomApplication : Application() {
     lateinit var component :AppComponent
     override fun onCreate() {
         super.onCreate()
-        component = DaggerAppComponent.builder()
-            .appModule(AppModule(applicationContext))
-            .viewModelModule(ViewModelModule(applicationContext))
-            .build()
+        component = DaggerAppComponent.factory()
+            .create(applicationContext)
+//        component = DaggerAppComponent.builder()
+//            .appModule(AppModule(applicationContext))
+//            .viewModelModule(ViewModelModule(applicationContext))
+//            .build()
     }
 }

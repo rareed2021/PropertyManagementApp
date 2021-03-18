@@ -1,18 +1,15 @@
 package com.test.propertymanagementapp.ui.auth
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
+import androidx.appcompat.app.AppCompatActivity
 import com.test.propertymanagementapp.app.CustomApplication
-import com.test.propertymanagementapp.app.ViewModelFactory
 import com.test.propertymanagementapp.data.models.enums.AccountType
 import com.test.propertymanagementapp.databinding.FragmentRegisterBinding
-import com.test.propertymanagementapp.ui.home.HomeActivity
 import javax.inject.Inject
 
 
@@ -30,7 +27,7 @@ class RegisterFragment : Fragment() {
     private lateinit var viewModel: AuthViewModel
     private lateinit var binding : FragmentRegisterBinding
     @Inject
-    lateinit var viewModelFactory : ViewModelFactory
+    lateinit var viewmodel : AuthViewModel
     var accountType: AccountType? = null
         private set
 //    private var param2: String? = null
@@ -40,8 +37,9 @@ class RegisterFragment : Fragment() {
         arguments?.let {
             accountType = it.getSerializable(PARAM_TYPE) as? AccountType
         }
-        (activity?.application as? CustomApplication)?.component?.inject(this)
-        viewModel = ViewModelProvider(this,viewModelFactory).get(AuthViewModel::class.java)
+        (activity?.application as? CustomApplication)?.component
+            ?.activityComponent?.create(this.activity as AppCompatActivity)
+            ?.inject(this)
 
     }
 

@@ -43,7 +43,6 @@ class AuthRepository @Inject constructor(
                 Log.d("myapp", "Result is not error")
                 Thread {
                     kotlin.run {
-                        Observable.interval(30, TimeUnit.SECONDS)
                         val user = response.user
                         if (user != null)
                             successCallback(user)

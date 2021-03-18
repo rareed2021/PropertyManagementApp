@@ -6,10 +6,6 @@ import android.content.SharedPreferences;
 import androidx.lifecycle.ViewModel;
 
 import com.test.propertymanagementapp.app.Config;
-import com.test.propertymanagementapp.app.ViewModelFactory;
-import com.test.propertymanagementapp.data.network.PropertyApi;
-import com.test.propertymanagementapp.data.repositories.AuthLocalDataSource;
-import com.test.propertymanagementapp.data.repositories.AuthRemoteDataSource;
 import com.test.propertymanagementapp.data.repositories.AuthRepository;
 import com.test.propertymanagementapp.ui.auth.AuthValidator;
 import com.test.propertymanagementapp.ui.auth.AuthViewModel;
@@ -30,10 +26,8 @@ import dagger.multibindings.IntoMap;
 @Module
 public class ViewModelModule {
 
-    Context applicationContext;
-    public ViewModelModule(Context context){
-        applicationContext = context;
-    }
+
+    public ViewModelModule(){}
 
     @Target(ElementType.METHOD)
     @Retention(RetentionPolicy.RUNTIME)
@@ -42,10 +36,10 @@ public class ViewModelModule {
         Class<? extends ViewModel> value();
     }
 
-    @Provides
-    ViewModelFactory viewModelFactory(Map<Class<? extends ViewModel>, Provider<ViewModel>> providerMap) {
-        return new ViewModelFactory(providerMap);
-    }
+//    @Provides
+//    ViewModelFactoryJava viewModelFactory(Map<Class<? extends ViewModel>, Provider<ViewModel>> providerMap) {
+//        return new ViewModelFactoryJava(providerMap);
+//    }
 
     @Provides
     @IntoMap
@@ -55,8 +49,8 @@ public class ViewModelModule {
     }
 
     @Provides
-    SharedPreferences providesSharedPreferences(){
-        return applicationContext.getSharedPreferences(Config.SHARED_PREFERENCE_FILE, Context.MODE_PRIVATE);
+    SharedPreferences providesSharedPreferences(Context context){
+        return context.getSharedPreferences(Config.SHARED_PREFERENCE_FILE, Context.MODE_PRIVATE);
     }
 
 
