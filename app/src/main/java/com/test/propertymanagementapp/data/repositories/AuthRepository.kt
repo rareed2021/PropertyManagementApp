@@ -51,6 +51,11 @@ class AuthRepository @Inject constructor(
             }
         }
     }
+
+    suspend fun  getUser():User?{
+        Log.d("myapp","Getting user")
+        return localData.getUser()
+    }
 }
 
 //inner class AuthResponseObserver(val successCallback: (User) -> Unit) :
@@ -80,6 +85,8 @@ class AuthRemoteDataSource @Inject constructor(private val api: PropertyApi) {
     }
 
     suspend fun register(user: RegistrationUser) = api.register(user)
+
+
 }
 
 
@@ -96,6 +103,14 @@ class AuthLocalDataSource @Inject constructor(
     suspend fun register(user: User) {
         prefs.edit().putString(Config.CURRENT_USER_KEY, user._id).apply()
         userDao.addUser(user)
+    }
+
+    suspend fun getUser() : User?{
+        val uid = prefs.getString(Config.CURRENT_USER_KEY, null)
+        Log.d("myapp","$uid")
+        return uid?.let {
+            userDao.getUser(uid)
+        }
     }
 
 }

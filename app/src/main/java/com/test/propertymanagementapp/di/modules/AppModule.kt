@@ -9,14 +9,17 @@ import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.test.propertymanagementapp.app.Config
 import com.test.propertymanagementapp.app.ViewModelFactory
 import com.test.propertymanagementapp.data.database.Database
+import com.test.propertymanagementapp.data.database.PropertyDao
 import com.test.propertymanagementapp.data.database.UserDao
 import com.test.propertymanagementapp.data.network.PropertyApi
 import com.test.propertymanagementapp.data.repositories.AuthRepository
 import com.test.propertymanagementapp.data.repositories.HomeRepository
+import com.test.propertymanagementapp.data.repositories.PropertyRepository
 import com.test.propertymanagementapp.di.components.ActivityComponent
 import com.test.propertymanagementapp.ui.auth.AuthValidator
 import com.test.propertymanagementapp.ui.auth.AuthViewModel
 import com.test.propertymanagementapp.ui.home.HomeViewModel
+import com.test.propertymanagementapp.ui.properties.PropertyViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.ClassKey
@@ -63,6 +66,10 @@ class AppModule() {
     fun providesUserDao(db:Database):UserDao{
         return db.getUserDao()
     }
+    @Provides
+    fun providesPropertyDao(db:Database):PropertyDao{
+        return db.getPropertyDao()
+    }
 
     @Provides
     fun provideSharedPreferences(context:Context):SharedPreferences=context
@@ -78,9 +85,16 @@ class AppModule() {
     @Provides
     @IntoMap
     @ClassKey(HomeViewModel::class)
-    fun providesHomeViewModel(repo:HomeRepository):ViewModel{
+    fun providesHomeViewModel(repo:AuthRepository):ViewModel{
         return HomeViewModel(repo)
     }
+    @Provides
+    @IntoMap
+    @ClassKey(PropertyViewModel::class)
+    fun providesPropertyViewModel(repo:AuthRepository, propertyRepo:PropertyRepository):ViewModel{
+        return PropertyViewModel(repo,propertyRepo)
+    }
+
 
     @Provides
     @JvmSuppressWildcards

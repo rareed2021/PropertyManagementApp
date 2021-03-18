@@ -18,6 +18,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="20dp"
+            android:onClick="@{def.clickFunction}"
             app:imageResource="@{def.icon}"
             android:background="?android:colorBackground"
             app:layout_constraintDimensionRatio="1:1"

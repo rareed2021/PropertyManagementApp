@@ -4,10 +4,11 @@ import androidx.lifecycle.MutableLiveData
 import com.test.propertymanagementapp.R
 import com.test.propertymanagementapp.data.models.User
 import com.test.propertymanagementapp.data.models.enums.AccountType
+import com.test.propertymanagementapp.data.repositories.AuthRepository
 import com.test.propertymanagementapp.data.repositories.HomeRepository
 import com.test.propertymanagementapp.ui.common.BaseViewModel
 
-class HomeViewModel(repository: HomeRepository) : BaseViewModel() {
+class HomeViewModel(repository: AuthRepository) : BaseViewModel() {
 
     val actions = MutableLiveData<List<ActionIcon>>()
     val user = MutableLiveData<User>()
