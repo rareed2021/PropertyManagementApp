@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import java.util.concurrent.CancellationException
 
 abstract class BaseViewModel :ViewModel(){
-    val isNetworkAvailable = MutableLiveData<Boolean>()
+    val isNetworkAvailable = MutableLiveData<Boolean>().apply{ value=true }
     val _error = MutableLiveData<String>().apply { value="" }
     lateinit var job : Job
 
