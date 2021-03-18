@@ -10,11 +10,11 @@ import com.test.propertymanagementapp.data.models.User
 interface UserDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun addUser(user: User):Long
+    suspend fun addUser(user: User):Long
 
     @Query("select * from User where _id = :id")
-    fun getUser(id:String):User?
+    suspend fun getUser(id:String):User?
 
     @Query("update user set name =ifnull(:name,name), email= ifnull(:email,email), password=ifnull(:password,password), landlordEmail= ifnull(:landlordEmail,landlordEmail) where _id=:id")
-    fun updateUserInfo(id: String, name:String?=null,email:String?=null, landlordEmail:String?=null,password:String?=null):Int
+    suspend fun updateUserInfo(id: String, name:String?=null,email:String?=null, landlordEmail:String?=null,password:String?=null):Int
 }

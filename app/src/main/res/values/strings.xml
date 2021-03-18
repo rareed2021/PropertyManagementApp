@@ -6,4 +6,5 @@
     <string name="edit_register_confirm_password">Confirm Password</string>
     <string name="register_button">Sign Up</string>
     <string name="edit_register_name">Name</string>
+    <string name="error_network">Network is currently unavailable</string>
 </resources>

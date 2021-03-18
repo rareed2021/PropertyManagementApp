@@ -37,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/attention_text"
-            android:text="@{viewmodel.errorMessage}"
+            android:text="@{viewmodel._error}"
             />
         <Button
             android:layout_width="wrap_content"

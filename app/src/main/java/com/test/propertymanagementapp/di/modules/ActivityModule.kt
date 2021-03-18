@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.test.propertymanagementapp.app.ViewModelFactory
 import com.test.propertymanagementapp.ui.auth.AuthViewModel
+import com.test.propertymanagementapp.ui.home.HomeViewModel
 import dagger.Module
 import dagger.Provides
 
@@ -11,7 +12,12 @@ import dagger.Provides
 @Module
 class ActivityModule {
     @Provides
-    fun provideViewModel(activity:AppCompatActivity, factory:ViewModelFactory):AuthViewModel{
+    fun provideAuthViewModel(activity:AppCompatActivity, factory:ViewModelFactory):AuthViewModel{
         return ViewModelProvider(activity, factory).get(AuthViewModel::class.java)
+    }
+
+    @Provides
+    fun provideHomeViewModel(activity: AppCompatActivity, factory: ViewModelFactory):HomeViewModel{
+        return ViewModelProvider(activity, factory).get(HomeViewModel::class.java)
     }
 }
