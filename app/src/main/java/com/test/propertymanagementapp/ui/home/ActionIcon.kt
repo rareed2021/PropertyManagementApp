@@ -1,4 +1,4 @@
-package com.test.propertymanagementapp.data.models
+package com.test.propertymanagementapp.ui.home
 
 class ActionIcon(
     val icon:Int,

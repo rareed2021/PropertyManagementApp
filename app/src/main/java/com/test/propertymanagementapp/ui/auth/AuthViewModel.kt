@@ -4,14 +4,17 @@ import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
-import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
 import com.test.propertymanagementapp.data.models.AuthResponse
 import com.test.propertymanagementapp.data.models.RegistrationUser
 import com.test.propertymanagementapp.data.models.enums.AccountType
 import com.test.propertymanagementapp.data.repositories.AuthRepository
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.Disposable
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import retrofit2.HttpException
 
 class AuthViewModel(private val repository: AuthRepository, private val validator: AuthValidator)  : ViewModel(){
     val user = RegistrationUser()
@@ -31,9 +34,14 @@ class AuthViewModel(private val repository: AuthRepository, private val validato
         Log.d("myapp","Checking Login")
         val result = validator.validateLogin(user)
         if(result==AuthValidationResult.Success) {
+            viewModelScope.launch(Dispatchers.Default) {
+                try {
+                    handleSuccess(repository.login(email!!, password!!), AuthAction.LOGIN)
+                }catch (e:Throwable){
+                    handleError(e)
+                }
+            }
             //should be safe to cast because validator checks
-            repository.login(email!!, password!!)
-                .subscribe(AuthObserver(AuthAction.LOGIN))
         }else{
             errorMessage.value = result.message
         }
@@ -64,10 +72,42 @@ class AuthViewModel(private val repository: AuthRepository, private val validato
                 landlordEmail = landlordEmail,
                 type = type
             )
-            repository.register(user)
-                .subscribe(AuthObserver(AuthAction.REGISTER))
+            viewModelScope.launch {
+                try {
+                    handleSuccess(repository.register(user), AuthAction.REGISTER)
+                }catch(e:Throwable){
+                    handleError(e)
+                }
+            }
         }else{
             errorMessage.value = result.message
+        }
+    }
+
+    private fun handleSuccess(response: AuthResponse, successAction: AuthAction){
+        Log.d("myapp","success: $response")
+        if(response.error) {
+            Log.d("myapp","Error: ${response.message}")
+
+//                val response = Gson().fromJson()
+            errorMessage.postValue(response.message ?: "Error encountered")
+        }else{
+            currentAction.postValue(successAction)
+        }
+    }
+
+    private fun handleError(e: Throwable){
+        if(e is HttpException){
+            val msg = e.response()?.errorBody()?.string()
+            Log.d("myapp",msg?:"Error")
+            val response = Gson().fromJson(msg, AuthResponse::class.java)
+            val err = response?.message ?: e.localizedMessage?:"Error"
+            Log.e("myapp",err)
+            errorMessage.postValue(err)
+        }else{
+            Log.e("myapp","Generic error")
+            Log.e("myapp", "$e    ${e.message}    ${e.localizedMessage}")
+            errorMessage.postValue(e.localizedMessage)
         }
     }
 
@@ -91,7 +131,7 @@ class AuthViewModel(private val repository: AuthRepository, private val validato
         override fun onError(e: Throwable) {
             Log.d("myapp","error: $e")
             if(e is HttpException){
-                val msg = e.response().errorBody()?.string()
+                val msg = e.response()?.errorBody()?.string()
                 Log.d("myapp",msg?:"Error")
                 val response = Gson().fromJson(msg, AuthResponse::class.java)
                 val err = response?.message ?: e.localizedMessage?:"Error"

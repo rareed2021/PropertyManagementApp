@@ -1,6 +1,7 @@
 package com.test.propertymanagementapp.di.modules
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.room.Room
 import com.test.propertymanagementapp.di.annotations.ApplicationScope
@@ -28,15 +29,16 @@ class AppModule() {
 
     @Provides
     @ApplicationScope
-    fun providesGsonConverter() = GsonConverterFactory.create()
+    fun providesGsonConverter():GsonConverterFactory = GsonConverterFactory.create()
 
     @Provides
     @ApplicationScope
-    fun providesRxAdapter() =RxJava2CallAdapterFactory.create()
+    fun providesRxAdapter():RxJava2CallAdapterFactory =RxJava2CallAdapterFactory.create()
 
     @Provides
     @ApplicationScope
-    fun providesRetrofit(gson:GsonConverterFactory, rxAdapter:RxJava2CallAdapterFactory)=Retrofit.Builder()
+    fun providesRetrofit(gson:GsonConverterFactory, rxAdapter:RxJava2CallAdapterFactory):Retrofit=
+        Retrofit.Builder()
         .baseUrl(Config.BASE_URL)
         .addConverterFactory(gson)
         .addCallAdapterFactory(rxAdapter)
@@ -61,7 +63,7 @@ class AppModule() {
     }
 
     @Provides
-    fun provideSharedPreferences(context:Context)=context
+    fun provideSharedPreferences(context:Context):SharedPreferences=context
         .getSharedPreferences(Config.SHARED_PREFERENCE_FILE, Context.MODE_PRIVATE)
 
     @Provides
