@@ -3,40 +3,37 @@ package com.test.propertymanagementapp.ui.auth
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.test.propertymanagementapp.data.models.AuthResponse
 import com.test.propertymanagementapp.data.models.RegistrationUser
 import com.test.propertymanagementapp.data.models.enums.AccountType
 import com.test.propertymanagementapp.data.repositories.AuthRepository
-import io.reactivex.SingleObserver
-import io.reactivex.disposables.Disposable
+import com.test.propertymanagementapp.ui.common.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 
 class AuthViewModel(private val repository: AuthRepository, private val validator: AuthValidator) :
-    ViewModel() {
+    BaseViewModel() {
     val user = RegistrationUser()
     val confirmPassword = MutableLiveData<String>().apply { value = "" }
     val accountType = MutableLiveData<AccountType>().apply { value = AccountType.tenant }
-    val errorMessage = MutableLiveData<String>().apply { value = "" }
     val currentAction = MutableLiveData<AuthAction>().apply { value = AuthAction.PENDING }
 
 
     fun loginButtonClick(view: View) {
 //        val password = password.value
 //        val email = email.value
-        errorMessage.value=""
+        _error.value=""
         val email = user.email
         val password = user.password
         val user = user
         Log.d("myapp", "Checking Login")
         val result = validator.validateLogin(user)
         if (result == AuthValidationResult.Success) {
-            viewModelScope.launch(Dispatchers.IO) {
+            viewModelScope.launch {
                 try {
                     handleSuccess(repository.login(email!!, password!!), AuthAction.LOGIN)
                 } catch (e: Throwable) {
@@ -45,14 +42,14 @@ class AuthViewModel(private val repository: AuthRepository, private val validato
             }
             //should be safe to cast because validator checks
         } else {
-            errorMessage.value = result.message
+            _error.value = result.message
         }
     }
 
 
     fun registerUser(view: View) {
         Log.d("myapp", "Begining registration")
-        errorMessage.value=""
+        _error.value=""
         val password = user.password
         val email = user.email
         val landlordEmail = user.landlordEmail
@@ -83,7 +80,7 @@ class AuthViewModel(private val repository: AuthRepository, private val validato
                 }
             }
         } else {
-            errorMessage.value = result.message
+            _error.value = result.message
         }
     }
 
@@ -92,7 +89,7 @@ class AuthViewModel(private val repository: AuthRepository, private val validato
         withContext(Dispatchers.Main) {
             if (response.error) {
                 Log.d("myapp", "Error: ${response.message}")
-                errorMessage.value = response.message ?: "Error encountered"
+                _error.value = response.message ?: "Error encountered"
             } else {
                 currentAction.value = successAction
             }
@@ -107,11 +104,11 @@ class AuthViewModel(private val repository: AuthRepository, private val validato
                 val response = Gson().fromJson(msg, AuthResponse::class.java)
                 val err = response?.message ?: e.localizedMessage ?: "Error"
                 Log.e("myapp", err)
-                errorMessage.value = err
+                _error.value = err
             } else {
                 Log.e("myapp", "Generic error")
                 Log.e("myapp", "$e    ${e.message}    ${e.localizedMessage}")
-                errorMessage.value = e.localizedMessage
+                _error.value = e.localizedMessage
             }
 
         }
