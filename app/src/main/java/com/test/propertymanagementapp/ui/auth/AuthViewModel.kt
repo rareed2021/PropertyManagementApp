@@ -10,6 +10,7 @@ import com.test.propertymanagementapp.data.models.RegistrationUser
 import com.test.propertymanagementapp.data.models.enums.AccountType
 import com.test.propertymanagementapp.data.repositories.AuthRepository
 import com.test.propertymanagementapp.ui.common.BaseViewModel
+import com.test.propertymanagementapp.ui.common.logAll
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -32,17 +33,18 @@ class AuthViewModel(private val repository: AuthRepository, private val validato
         val user = user
         Log.d("myapp", "Checking Login")
         val result = validator.validateLogin(user)
-        if (result == AuthValidationResult.Success) {
+        if (result.isEmpty()) {
             viewModelScope.launch {
                 try {
+                    //should be safe to cast because validator checks
                     handleSuccess(repository.login(email!!, password!!), AuthAction.LOGIN)
                 } catch (e: Throwable) {
                     handleError(e)
                 }
             }
-            //should be safe to cast because validator checks
         } else {
-            _error.value = result.message
+            _error.value = result.first().message
+            result.logAll("Login")
         }
     }
 
@@ -64,7 +66,7 @@ class AuthViewModel(private val repository: AuthRepository, private val validato
             landlordEmail = landlordEmail,
             checkTenant = type == AccountType.tenant
         )
-        if (result == AuthValidationResult.Success) {
+        if (result.isEmpty()) {
             val user = RegistrationUser(
                 name = name,
                 password = password,
@@ -80,7 +82,8 @@ class AuthViewModel(private val repository: AuthRepository, private val validato
                 }
             }
         } else {
-            _error.value = result.message
+            _error.value = result.first().message
+            result.logAll("Registration")
         }
     }
 

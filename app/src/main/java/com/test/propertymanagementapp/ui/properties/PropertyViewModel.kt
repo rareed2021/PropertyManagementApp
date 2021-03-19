@@ -9,6 +9,7 @@ import com.test.propertymanagementapp.data.models.Property
 import com.test.propertymanagementapp.data.repositories.AuthRepository
 import com.test.propertymanagementapp.data.repositories.PropertyRepository
 import com.test.propertymanagementapp.ui.common.BaseViewModel
+import com.test.propertymanagementapp.ui.common.logAll
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
@@ -37,9 +38,7 @@ class PropertyViewModel(val auth:AuthRepository, val repository:PropertyReposito
             Log.d("myapp", "Submitting property: ${currentProperty.value}")
         }else{
             _error.value = issues.first().message
-            for(i in issues){
-                Log.d("myapp", "Error validating property $i")
-            }
+            issues.logAll("add property")
         }
     }
 }
