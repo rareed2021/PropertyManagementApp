@@ -3,20 +3,35 @@ package com.test.propertymanagementapp.ui.properties
 import android.util.Log
 import android.view.View
 import androidx.databinding.adapters.SpinnerBindingAdapter
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
 import com.test.propertymanagementapp.data.models.Property
+import com.test.propertymanagementapp.data.models.PropertyResponse
 import com.test.propertymanagementapp.data.repositories.AuthRepository
 import com.test.propertymanagementapp.data.repositories.PropertyRepository
 import com.test.propertymanagementapp.ui.common.BaseViewModel
 import com.test.propertymanagementapp.ui.common.logAll
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 
-class PropertyViewModel(val auth:AuthRepository, val repository:PropertyRepository, val validator:PropertyValidator)  : BaseViewModel(){
-    val properties = MutableLiveData<List<Property>>()
+class PropertyViewModel(private val auth:AuthRepository, private val repository:PropertyRepository, private val validator:PropertyValidator)  : BaseViewModel(){
+    val properties = MediatorLiveData<List<Property>>()
     val currentProperty = MutableLiveData<Property>()
 
+    init {
+        viewModelScope.launch {
+            val user = auth.getUser()
+            if(user!=null){
+                repository.getProperties(user._id)
+                properties.addSource(repository.watchProperties(user._id)) {
+                    it
+                }
+            }
+        }
+    }
 
     fun newProperty(){
         viewModelScope.launch {
@@ -34,11 +49,25 @@ class PropertyViewModel(val auth:AuthRepository, val repository:PropertyReposito
     }
 
     fun submitProperty(view: View){
-        val issues = validator.validateNewProperty(currentProperty.value)
+        val property = currentProperty.value
+        val issues = validator.validateNewProperty(property)
         _state.value = State.PENDING
         if(issues.isEmpty()) {
-            Log.d("myapp", "Submitting property: ${currentProperty.value}")
-            _state.value = State.FINISHED
+            viewModelScope.launch {
+                try {
+                    Log.d("myapp", "Submitting property: $property")
+                    if (property != null) repository.addProperty(property)
+                    _state.value = State.FINISHED
+                }catch (e:HttpException){
+                    val response = Gson().fromJson(e.response()?.errorBody()?.string()?:"{}",PropertyResponse::class.java)
+                    val msg = response?.message ?: "Error $e"
+                    _error.value = msg
+                    Log.d("myapp",msg)
+                }catch(e:Throwable){
+                    _error.value = e.localizedMessage
+                    Log.d("myapp", e.localizedMessage)
+                }
+            }
         }else{
             _error.value = issues.first().message
             issues.logAll("add property")

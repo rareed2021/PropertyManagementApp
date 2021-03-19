@@ -34,7 +34,7 @@ data class PropertyResponse(
     @SerializedName("error")
     var error: Boolean? = null,
     @SerializedName("message")
-    var message: Boolean? = null
+    var message: String? = null
 )
 
 
