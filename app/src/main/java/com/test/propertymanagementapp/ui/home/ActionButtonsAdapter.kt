@@ -1,5 +1,6 @@
 package com.test.propertymanagementapp.ui.home
 
+import android.content.Intent
 import android.util.Log
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
@@ -20,6 +21,19 @@ class ActionButtonsAdapter @Inject constructor(val activity:AppCompatActivity, v
     }
 
     inner class ViewHolder(val binding: RowIconBinding) : RecyclerView.ViewHolder(binding.root){
+        fun bind(actionIcon: ActionIcon) {
+            binding.def = actionIcon
+            binding.imageIcon.setOnClickListener {
+                Log.d("myapp","Clicked on listener ${actionIcon.nextActivity}")
+                actionIcon.action?.apply {
+                    invoke()
+                }
+                actionIcon.nextActivity?.also {
+                    Log.d("myapp","Reached nextActivity branch")
+                    activity.startActivity(Intent(activity,it))
+                }
+            }
+        }
 
     }
 
@@ -29,7 +43,7 @@ class ActionButtonsAdapter @Inject constructor(val activity:AppCompatActivity, v
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.binding.def = mData[position]
+        holder.bind(mData[position])
     }
 
     override fun getItemCount(): Int {

@@ -1,5 +1,6 @@
 package com.test.propertymanagementapp.ui.properties
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,5 +29,8 @@ class PropertyHomeActivity : AppCompatActivity() {
     private fun init() {
         binding.recyclerProperties.adapter = adapter
         binding.recyclerProperties.layoutManager = LinearLayoutManager(this)
+        binding.buttonAddProperty.setOnClickListener {
+            startActivity(Intent(this,AddPropertyActivity::class.java))
+        }
     }
 }

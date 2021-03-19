@@ -19,20 +19,35 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Street Address"
-        android:text="@={property.address}"
+        android:text="@={viewmodel.currentProperty.address}"
         />
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="City"
-        android:text="@={property.city}"
+        android:text="@={viewmodel.currentProperty.city}"
         />
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="State/Province"
-        android:text="@={property.address}"
+        android:text="@={viewmodel.currentProperty.address}"
         />
-
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+    <ToggleButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Does this property have a mortgage?"
+        android:checked="@={viewmodel.currentProperty.mortageInfo}"
+        />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit Property"
+        android:onClick="@{viewmodel::submitProperty}"
+        />
 </LinearLayout>
 </layout>

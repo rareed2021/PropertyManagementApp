@@ -46,3 +46,4 @@ data class Property(
     @SerializedName("__v")
     var v: Int? = null
 )
+
