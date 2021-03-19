@@ -14,34 +14,62 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    style="@style/edit_activity"
     tools:context=".ui.properties.AddPropertyActivity">
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Street Address"
+        android:autofillHints="postalAddress"
+        style="@style/propertyItemEdit"
         android:text="@={viewmodel.currentProperty.address}"
         />
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="City"
+        android:autofillHints="addressLocality"
+        style="@style/propertyItemEdit"
         android:text="@={viewmodel.currentProperty.city}"
         />
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="State/Province"
+        android:id="@+id/edit_state"
+        android:autofillHints="addressRegion"
+        style="@style/propertyItemEdit"
         android:text="@={viewmodel.currentProperty.address}"
         />
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:spinnerMode="dialog"
+        android:entries="@array/countries_array"
+        style="@style/propertyItemEdit"
+        android:selectedValue="@={viewmodel.currentProperty.country}"
         />
-    <ToggleButton
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Purchase Price"
+        android:importantForAutofill="no"
+        style="@style/propertyItemEdit"
+        android:inputType="numberDecimal"
+        android:text="@={viewmodel.currentProperty.purchasePrice}"
+        />
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:switchMinWidth="60dp"
+        android:layout_gravity="end"
         android:text="Does this property have a mortgage?"
         android:checked="@={viewmodel.currentProperty.mortageInfo}"
+        android:splitTrack="true"
+        android:textOff="@string/yes"
+        android:textOn="@string/no"
+        android:textSize="16sp"
+        style="@style/propertyItemEdit"
         />
     <Button
         android:layout_width="match_parent"

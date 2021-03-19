@@ -2,6 +2,7 @@ package com.test.propertymanagementapp.ui.properties
 
 import android.util.Log
 import android.view.View
+import androidx.databinding.adapters.SpinnerBindingAdapter
 import androidx.lifecycle.MutableLiveData
 import com.test.propertymanagementapp.data.models.Property
 import com.test.propertymanagementapp.data.repositories.AuthRepository

@@ -3,16 +3,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
-data class PropertyResponse(
-    @SerializedName("count")
-    var count: Int? = null,
-    @SerializedName("data")
-    var `data`: List<Property>? = null,
-    @SerializedName("error")
-    var error: Boolean? = null,
-    @SerializedName("message")
-    var message: Boolean? = null
-)
+
 
 @Entity
 data class Property(
@@ -21,7 +12,7 @@ data class Property(
     @SerializedName("city")
     var city: String? = null,
     @SerializedName("country")
-    var country: String? = null,
+    var country: String = "",
     @SerializedName("_id")
     @PrimaryKey
     var id: String,

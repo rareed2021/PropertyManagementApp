@@ -1,10 +1,6 @@
 package com.test.propertymanagementapp.data.network
 
-import com.test.propertymanagementapp.data.models.AuthResponse
-import com.test.propertymanagementapp.data.models.PropertyResponse
-import com.test.propertymanagementapp.data.models.RegistrationUser
-import com.test.propertymanagementapp.data.models.User
-import io.reactivex.Single
+import com.test.propertymanagementapp.data.models.*
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -19,6 +15,8 @@ interface PropertyApi {
     suspend fun register(@Body user:RegistrationUser): AuthResponse
 
     @GET("property/user/{id}")
-    suspend fun getProperties(@Path("id") userId:String):PropertyResponse
+    suspend fun getProperties(@Path("id") userId:String):PropertyListResponse
 
+    @POST("property")
+    suspend fun addProperty(@Body property: Property):PropertyResponse
 }
