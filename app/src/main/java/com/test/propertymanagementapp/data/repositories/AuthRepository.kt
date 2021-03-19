@@ -34,6 +34,8 @@ class AuthRepository @Inject constructor(
     suspend fun register(user: RegistrationUser) = remoteData.register(user).also {
         it.user?.also { u->localData.register(u) }
     }
+
+    suspend fun logout()= localData.logout()
     //.doOnSuccess { handleResult(it, localData::register) }
 
 
@@ -113,4 +115,7 @@ class AuthLocalDataSource @Inject constructor(
         }
     }
 
+    fun logout() {
+        prefs.edit().remove(Config.CURRENT_USER_KEY).apply()
+    }
 }

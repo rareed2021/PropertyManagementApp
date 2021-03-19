@@ -20,6 +20,7 @@ class PropertyViewModel(val auth:AuthRepository, val repository:PropertyReposito
 
     fun newProperty(){
         viewModelScope.launch {
+            _state.value = State.INITIALIZED
             val user = auth.getUser()
             Log.d("myapp","$user")
             user?.also {
@@ -34,11 +35,16 @@ class PropertyViewModel(val auth:AuthRepository, val repository:PropertyReposito
 
     fun submitProperty(view: View){
         val issues = validator.validateNewProperty(currentProperty.value)
+        _state.value = State.PENDING
         if(issues.isEmpty()) {
             Log.d("myapp", "Submitting property: ${currentProperty.value}")
+            _state.value = State.FINISHED
         }else{
             _error.value = issues.first().message
             issues.logAll("add property")
+            _state.value = State.ERROR
         }
     }
+
+
 }

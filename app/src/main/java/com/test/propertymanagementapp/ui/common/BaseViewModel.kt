@@ -14,6 +14,7 @@ import java.util.concurrent.CancellationException
 abstract class BaseViewModel :ViewModel(){
     val isNetworkAvailable = MutableLiveData<Boolean>().apply{ value=true }
     val _error = MutableLiveData<String>().apply { value="" }
+    val _state = MutableLiveData<State>().apply{value=State.INITIALIZED}
     lateinit var job : Job
 
     private val networkObserver = Observer<Boolean>{
@@ -40,5 +41,11 @@ abstract class BaseViewModel :ViewModel(){
         }else{
             _error.value="Network unavailable"
         }
+    }
+    enum class State{
+        INITIALIZED,
+        PENDING,
+        FINISHED,
+        ERROR
     }
 }

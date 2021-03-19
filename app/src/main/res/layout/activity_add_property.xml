@@ -39,7 +39,7 @@
         android:id="@+id/edit_state"
         android:autofillHints="addressRegion"
         style="@style/propertyItemEdit"
-        android:text="@={viewmodel.currentProperty.address}"
+        android:text="@={viewmodel.currentProperty.state}"
         />
     <Spinner
         android:layout_width="match_parent"
