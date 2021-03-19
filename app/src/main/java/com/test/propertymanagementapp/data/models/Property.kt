@@ -2,7 +2,7 @@ package com.test.propertymanagementapp.data.models
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
-
+import com.test.propertymanagementapp.data.models.enums.AccountType
 
 
 @Entity
@@ -33,7 +33,7 @@ data class Property(
     @SerializedName("userId")
     var userId: String? = null,
     @SerializedName("userType")
-    var userType: String? = null,
+    var userType: AccountType? = null,
     @SerializedName("__v")
     var v: Int? = null
 )

@@ -48,11 +48,13 @@ class SpinnerValueBindingAdapter {
         @BindingAdapter("android:selectedValue")
         fun setSpinner(
             view: Spinner,
-            newSelectedValue: String
+            newSelectedValue: String?
         ) {
-            val pos = (view.adapter as? ArrayAdapter<String>)?.getPosition(newSelectedValue)
-            if (pos != null) {
-                view.setSelection(pos, true)
+            if(newSelectedValue !=null) {
+                val pos = (view.adapter as? ArrayAdapter<String>)?.getPosition(newSelectedValue)
+                if (pos != null) {
+                    view.setSelection(pos, true)
+                }
             }
         }
 
@@ -60,8 +62,8 @@ class SpinnerValueBindingAdapter {
         @InverseBindingAdapter(
             attribute = "android:selectedValue"
         )
-        fun captureSelectedValue(view: Spinner): String {
-            return view.selectedItem as String
+        fun captureSelectedValue(view: Spinner): String? {
+            return view.selectedItem as String?
         }
     }
 }

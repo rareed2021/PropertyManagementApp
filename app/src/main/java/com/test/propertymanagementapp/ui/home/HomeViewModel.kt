@@ -8,6 +8,8 @@ import com.test.propertymanagementapp.data.repositories.AuthRepository
 import com.test.propertymanagementapp.data.repositories.HomeRepository
 import com.test.propertymanagementapp.ui.common.BaseViewModel
 import com.test.propertymanagementapp.ui.properties.PropertyHomeActivity
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlin.reflect.KClass
 
 class HomeViewModel(repository: AuthRepository) : BaseViewModel() {

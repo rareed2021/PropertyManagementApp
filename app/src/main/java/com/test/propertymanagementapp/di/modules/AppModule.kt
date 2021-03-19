@@ -19,6 +19,7 @@ import com.test.propertymanagementapp.di.components.ActivityComponent
 import com.test.propertymanagementapp.ui.auth.AuthValidator
 import com.test.propertymanagementapp.ui.auth.AuthViewModel
 import com.test.propertymanagementapp.ui.home.HomeViewModel
+import com.test.propertymanagementapp.ui.properties.PropertyValidator
 import com.test.propertymanagementapp.ui.properties.PropertyViewModel
 import dagger.Module
 import dagger.Provides
@@ -91,8 +92,8 @@ class AppModule() {
     @Provides
     @IntoMap
     @ClassKey(PropertyViewModel::class)
-    fun providesPropertyViewModel(repo:AuthRepository, propertyRepo:PropertyRepository):ViewModel{
-        return PropertyViewModel(repo,propertyRepo)
+    fun providesPropertyViewModel(repo:AuthRepository, propertyRepo:PropertyRepository, validator: PropertyValidator):ViewModel{
+        return PropertyViewModel(repo,propertyRepo, validator)
     }
 
 

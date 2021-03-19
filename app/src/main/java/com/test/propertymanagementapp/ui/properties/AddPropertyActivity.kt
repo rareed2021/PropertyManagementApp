@@ -21,8 +21,8 @@ class AddPropertyActivity : AppCompatActivity() {
     }
 
     private fun init() {
+        viewmodel.newProperty()
         binding.viewmodel = viewmodel
-        val activeProperty = Property(id="")
-        viewmodel.currentProperty.value =activeProperty
+        binding.lifecycleOwner=this
     }
 }

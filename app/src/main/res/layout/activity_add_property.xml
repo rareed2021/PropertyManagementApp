@@ -55,7 +55,7 @@
         android:hint="Purchase Price"
         android:importantForAutofill="no"
         style="@style/propertyItemEdit"
-        android:inputType="numberDecimal"
+        android:inputType="number"
         android:text="@={viewmodel.currentProperty.purchasePrice}"
         />
     <com.google.android.material.switchmaterial.SwitchMaterial
@@ -70,6 +70,12 @@
         android:textOn="@string/no"
         android:textSize="16sp"
         style="@style/propertyItemEdit"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/attention_text"
+        android:text="@{viewmodel._error}"
         />
     <Button
         android:layout_width="match_parent"
