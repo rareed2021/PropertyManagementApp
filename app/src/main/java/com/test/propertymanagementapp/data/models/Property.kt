@@ -52,6 +52,9 @@ data class Property(
         userType = userType,
         v = v,
     )
+    companion object{
+        fun create() = Property()
+    }
 }
 
 //api needs id nullable. database wants it not because primary key

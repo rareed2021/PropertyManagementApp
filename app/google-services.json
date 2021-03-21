@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "498815848595",
+    "firebase_url": "https://propertymanagement-bca2f-default-rtdb.firebaseio.com",
+    "project_id": "propertymanagement-bca2f",
+    "storage_bucket": "propertymanagement-bca2f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:498815848595:android:ab045e3e36ac3f610c3d66",
+        "android_client_info": {
+          "package_name": "com.test.propertymanagementapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "498815848595-iq581cueo22vvgnivvbcs277dqlimm3q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBz2vBwnoP9mq5-W9gBeVvX8wSvv-WeHzo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "498815848595-iq581cueo22vvgnivvbcs277dqlimm3q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

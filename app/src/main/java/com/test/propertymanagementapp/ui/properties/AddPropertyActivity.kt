@@ -23,7 +23,7 @@ class AddPropertyActivity : AppCompatActivity() {
     }
 
     private fun init() {
-        viewmodel.newProperty()
+        viewmodel.beginAdd()
         binding.viewmodel = viewmodel
         binding.lifecycleOwner=this
         viewmodel._state.observe(this){

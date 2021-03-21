@@ -6,6 +6,7 @@ import com.test.propertymanagementapp.app.ViewModelFactory
 import com.test.propertymanagementapp.ui.auth.AuthViewModel
 import com.test.propertymanagementapp.ui.home.HomeViewModel
 import com.test.propertymanagementapp.ui.properties.PropertyViewModel
+import com.test.propertymanagementapp.ui.todo.TodoViewModel
 import dagger.Module
 import dagger.Provides
 
@@ -24,5 +25,10 @@ class ActivityModule {
     @Provides
     fun providesPropertyViewModel(activity: AppCompatActivity, factory: ViewModelFactory):PropertyViewModel{
         return ViewModelProvider(activity,factory).get(PropertyViewModel::class.java)
+    }
+
+    @Provides
+    fun providesTodoViewModel(activity: AppCompatActivity, factory: ViewModelFactory):TodoViewModel{
+        return ViewModelProvider(activity,factory).get(TodoViewModel::class.java)
     }
 }

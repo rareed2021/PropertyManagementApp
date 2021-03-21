@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.room.Room
+import com.google.firebase.database.FirebaseDatabase
 import com.test.propertymanagementapp.di.annotations.ApplicationScope
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.test.propertymanagementapp.app.Config
@@ -15,12 +16,15 @@ import com.test.propertymanagementapp.data.network.PropertyApi
 import com.test.propertymanagementapp.data.repositories.AuthRepository
 import com.test.propertymanagementapp.data.repositories.HomeRepository
 import com.test.propertymanagementapp.data.repositories.PropertyRepository
+import com.test.propertymanagementapp.data.repositories.TodoRepository
 import com.test.propertymanagementapp.di.components.ActivityComponent
 import com.test.propertymanagementapp.ui.auth.AuthValidator
 import com.test.propertymanagementapp.ui.auth.AuthViewModel
 import com.test.propertymanagementapp.ui.home.HomeViewModel
 import com.test.propertymanagementapp.ui.properties.PropertyValidator
 import com.test.propertymanagementapp.ui.properties.PropertyViewModel
+import com.test.propertymanagementapp.ui.todo.TodoValidator
+import com.test.propertymanagementapp.ui.todo.TodoViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.ClassKey
@@ -77,6 +81,11 @@ class AppModule() {
         .getSharedPreferences(Config.SHARED_PREFERENCE_FILE, Context.MODE_PRIVATE)
 
     @Provides
+    fun providesFirebaseDatabase():FirebaseDatabase{
+        return FirebaseDatabase.getInstance()
+    }
+
+    @Provides
     @IntoMap
     @ClassKey(AuthViewModel::class)
     fun providesAuthViewModel(repository: AuthRepository, validator: AuthValidator) : ViewModel{
@@ -94,6 +103,12 @@ class AppModule() {
     @ClassKey(PropertyViewModel::class)
     fun providesPropertyViewModel(repo:AuthRepository, propertyRepo:PropertyRepository, validator: PropertyValidator):ViewModel{
         return PropertyViewModel(repo,propertyRepo, validator)
+    }
+    @Provides
+    @IntoMap
+    @ClassKey(TodoViewModel::class)
+    fun providesTodoViewModel(repo:TodoRepository, auth:AuthRepository, validator: TodoValidator)  : ViewModel{
+        return TodoViewModel(repo,auth,validator)
     }
 
 

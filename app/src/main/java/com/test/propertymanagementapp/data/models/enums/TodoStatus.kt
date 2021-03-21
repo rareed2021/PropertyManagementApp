@@ -1,7 +1,9 @@
 package com.test.propertymanagementapp.data.models.enums
 
-enum class TodoStatus {
-    Pending,
-    Completed,
-    Cancelled
+import com.test.propertymanagementapp.R
+
+enum class TodoStatus(val colorRes:Int) {
+    Pending(R.color.pending),
+    Completed(R.color.complete),
+    Cancelled(R.color.cancelled)
 }
