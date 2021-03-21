@@ -2,30 +2,27 @@ package com.test.propertymanagementapp.ui.auth
 
 import android.util.Log
 import com.test.propertymanagementapp.data.models.RegistrationUser
+import com.test.propertymanagementapp.data.models.enums.AccountType
 import java.util.*
 import javax.inject.Inject
 
 class AuthValidator @Inject constructor() {
     fun validateRegistration(
-        name: String?,
-        email: String?,
-        landlordEmail: String?,
-        password: String?,
-        confirmPassword: String?,
-        checkTenant: Boolean = false
-    )
-            : EnumSet<AuthValidationResult> {
+        user:RegistrationUser,
+    ): EnumSet<AuthValidationResult> {
         val ret = EnumSet.noneOf(AuthValidationResult::class.java)
+        user?.apply {
         if (email.isNullOrBlank())
             ret.add(AuthValidationResult.EmailBlank)
         if (password.isNullOrBlank())
             ret.add(AuthValidationResult.PasswordBlank)
         if (name.isNullOrBlank())
             ret.add(AuthValidationResult.NameBlank)
-        if (checkTenant && landlordEmail.isNullOrBlank())
+        if (type==AccountType.tenant && landlordEmail.isNullOrBlank())
             ret.add(AuthValidationResult.NoLandlordEmail)
         if (confirmPassword != password)
             ret.add(AuthValidationResult.PasswordsDontMatch)
+        }
         return ret;
     }
 
@@ -45,7 +42,6 @@ enum class AuthValidationResult(val message:String){
     NameBlank("Please provide name"),
     NoLandlordEmail("Please provide landlord email"),
     PasswordsDontMatch("Passwords do not match"),
-    Success("")
 }
 
 

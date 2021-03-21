@@ -19,7 +19,7 @@ import retrofit2.HttpException
 class AuthViewModel(private val repository: AuthRepository, private val validator: AuthValidator) :
     BaseViewModel() {
     val user = RegistrationUser()
-    val confirmPassword = MutableLiveData<String>().apply { value = "" }
+    //val confirmPassword = MutableLiveData<String>().apply { value = "" }
     val accountType = MutableLiveData<AccountType>().apply { value = AccountType.tenant }
     val currentAction = MutableLiveData<AuthAction>().apply { value = AuthAction.PENDING }
 
@@ -52,28 +52,15 @@ class AuthViewModel(private val repository: AuthRepository, private val validato
     fun registerUser(view: View) {
         Log.d("myapp", "Begining registration")
         _error.value=""
-        val password = user.password
-        val email = user.email
-        val landlordEmail = user.landlordEmail
-        val type = accountType.value
-        val confirmPassword = confirmPassword.value
-        val name = user.name
-        val result = validator.validateRegistration(
-            name = name,
-            password = password,
-            confirmPassword = confirmPassword,
-            email = email,
-            landlordEmail = landlordEmail,
-            checkTenant = type == AccountType.tenant
-        )
+//        val password = user.password
+//        val email = user.email
+//        val landlordEmail = user.landlordEmail
+//        val type = accountType.value
+//        val confirmPassword = confirmPassword.value
+//        val name = user.name
+        val user = user.copy()//take immutable snapshot for validation
+        val result = validator.validateRegistration(user)
         if (result.isEmpty()) {
-            val user = RegistrationUser(
-                name = name,
-                password = password,
-                email = email,
-                landlordEmail = landlordEmail,
-                type = type
-            )
             viewModelScope.launch(Dispatchers.Default) {
                 try {
                     handleSuccess(repository.register(user), AuthAction.REGISTER)

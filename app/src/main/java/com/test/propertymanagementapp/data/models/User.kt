@@ -1,7 +1,9 @@
 package com.test.propertymanagementapp.data.models
 
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import com.google.gson.annotations.Expose
 import com.test.propertymanagementapp.data.models.enums.AccountType
 
 
@@ -19,9 +21,15 @@ data class User(
 )
 
 data class RegistrationUser(
+    @Expose
     var email: String?=null,
+    @Expose
     var landlordEmail: String?=null,
+    @Expose
     var name: String?=null,
+    @Expose
     var password: String?=null,
-    var type: AccountType?=null
+    @Expose
+    var type: AccountType?=null,
+    var confirmPassword:String?=null
 )
