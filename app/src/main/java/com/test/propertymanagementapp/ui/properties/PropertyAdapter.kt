@@ -1,5 +1,6 @@
 package com.test.propertymanagementapp.ui.properties
 
+import android.util.Log
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
@@ -11,6 +12,12 @@ class PropertyAdapter @Inject constructor(val activity:AppCompatActivity, val vi
     :RecyclerView.Adapter<PropertyAdapter.ViewHolder>(){
     val mData = mutableListOf<Property>()
     init{
+        viewmodel.properties.observe(activity){
+            mData.clear()
+            mData.addAll(it)
+            notifyDataSetChanged()
+            Log.d("myapp","Loading properties. ${it.size}")
+        }
     }
     inner class ViewHolder(val binding:RowPropertyBinding) : RecyclerView.ViewHolder(binding.root){
 
@@ -24,9 +31,11 @@ class PropertyAdapter @Inject constructor(val activity:AppCompatActivity, val vi
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.property = mData[position]
+        Log.d("myapp","Binding property :${mData[position]}")
     }
 
     override fun getItemCount(): Int {
+        Log.d("myapp","${mData.size}")
         return mData.size
     }
 }

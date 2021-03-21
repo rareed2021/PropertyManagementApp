@@ -10,6 +10,11 @@ import androidx.databinding.*
 import com.bumptech.glide.Glide
 
 
+@BindingAdapter("android:customVisibility")
+fun setVisibility(view: View, visible:Boolean){
+    view.visibility = if(visible) View.VISIBLE else View.GONE
+}
+
 @BindingAdapter("imageUrl")
 fun loadImage(view: ImageView, url: String) = Glide.with(view).load(url).into(view)
 

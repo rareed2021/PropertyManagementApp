@@ -9,4 +9,5 @@
     <string name="error_network">Network is currently unavailable</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="city_address">%s, %s %s</string>
 </resources>

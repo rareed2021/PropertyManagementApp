@@ -27,7 +27,8 @@ class PropertyViewModel(private val auth:AuthRepository, private val repository:
             if(user!=null){
                 repository.getProperties(user._id)
                 properties.addSource(repository.watchProperties(user._id)) {
-                    it
+                    Log.d("myapp","Getting properties: $it")
+                    properties.value = it
                 }
             }
         }
@@ -39,7 +40,7 @@ class PropertyViewModel(private val auth:AuthRepository, private val repository:
             val user = auth.getUser()
             Log.d("myapp","$user")
             user?.also {
-                val newProp = Property(id="",
+                val newProp = Property(
                     mortageInfo = false,
                     userId = it._id,
                     userType = it.type)

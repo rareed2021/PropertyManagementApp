@@ -13,4 +13,5 @@
     <color name="theme">#23D889</color>
     <color name="themeDark">#0B7855</color>
     <color name="attention">#C52510</color>
+    <color name="grey_background">#CCC</color>
 </resources>

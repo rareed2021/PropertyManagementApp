@@ -24,6 +24,7 @@ class PropertyRepository @Inject constructor(val localData:PropertyLocalDataSour
         return null
     }
     fun watchProperties(userId:String): LiveData<List<Property>> = localData.watchProperties(userId)
+
 }
 
 class PropertyRemoteDataSource @Inject constructor(private val api:PropertyApi){
