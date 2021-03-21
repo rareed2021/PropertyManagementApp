@@ -10,6 +10,7 @@ import com.test.propertymanagementapp.ui.auth.RegisterFragment
 import com.test.propertymanagementapp.ui.home.HomeActivity
 import com.test.propertymanagementapp.ui.properties.AddPropertyActivity
 import com.test.propertymanagementapp.ui.properties.PropertyHomeActivity
+import com.test.propertymanagementapp.ui.todo.AddTodoActivity
 import com.test.propertymanagementapp.ui.todo.TodoListActivity
 import dagger.BindsInstance
 import dagger.Subcomponent
@@ -24,6 +25,7 @@ interface ActivityComponent {
     fun inject(activity:PropertyHomeActivity)
     fun inject(activity:AddPropertyActivity)
     fun inject(activity:TodoListActivity)
+    fun inject(activity:AddTodoActivity)
     fun inject(registerFragment: RegisterFragment)
     @Subcomponent.Factory
     interface Factory{

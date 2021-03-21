@@ -8,6 +8,7 @@ import com.test.propertymanagementapp.data.repositories.AuthRepository
 import com.test.propertymanagementapp.data.repositories.HomeRepository
 import com.test.propertymanagementapp.ui.common.BaseViewModel
 import com.test.propertymanagementapp.ui.properties.PropertyHomeActivity
+import com.test.propertymanagementapp.ui.todo.TodoListActivity
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlin.reflect.KClass
@@ -34,7 +35,7 @@ class HomeViewModel(repository: AuthRepository) : BaseViewModel() {
         val landlordActions = listOf(
             ActionIcon(R.drawable.ic_baseline_house_24, "Properties", nextActivity = PropertyHomeActivity::class.java),
             ActionIcon(R.drawable.ic_baseline_person_24, "Tenants"),
-            ActionIcon(R.drawable.ic_baseline_check_24, "Todo")
+            ActionIcon(R.drawable.ic_baseline_check_24, "Todo", nextActivity = TodoListActivity::class.java)
         )
     }
 }

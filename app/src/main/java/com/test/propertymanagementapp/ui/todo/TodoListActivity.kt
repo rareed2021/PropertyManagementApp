@@ -1,5 +1,6 @@
 package com.test.propertymanagementapp.ui.todo
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,5 +26,8 @@ class TodoListActivity : AppCompatActivity() {
     private fun init() {
         binding.recyclerTodos.adapter = adapter
         binding.recyclerTodos.layoutManager = LinearLayoutManager(this)
+        binding.buttonAddTodo.setOnClickListener {
+            startActivity(Intent(this, AddTodoActivity::class.java))
+        }
     }
 }

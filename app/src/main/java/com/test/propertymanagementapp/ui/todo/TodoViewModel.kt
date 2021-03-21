@@ -1,6 +1,7 @@
 package com.test.propertymanagementapp.ui.todo
 
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -42,5 +43,10 @@ class TodoViewModel(val repository: TodoRepository, val auth: AuthRepository, va
                 })
             }
         }
+    }
+
+
+    fun buttonClick(view: View){
+        Log.d("myapp", "adding ${current.value}")
     }
 }
