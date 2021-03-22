@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import com.test.propertymanagementapp.data.models.enums.AccountType
+import java.io.Serializable
 
 
 data class Property(
@@ -35,7 +36,7 @@ data class Property(
     var userType: AccountType? = null,
     @SerializedName("__v")
     var v: Int? = null
-) {
+) : Serializable{
     fun toEntity() = PropertyEntity(
         address = address,
         city = city,
@@ -54,6 +55,7 @@ data class Property(
     )
     companion object{
         fun create() = Property()
+        const val KEY = "PROPERTY"
     }
 }
 

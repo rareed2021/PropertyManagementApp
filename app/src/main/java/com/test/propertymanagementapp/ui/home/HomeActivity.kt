@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.test.propertymanagementapp.R
 import com.test.propertymanagementapp.app.CustomApplication
 import com.test.propertymanagementapp.databinding.ActivityHomeBinding
+import com.test.propertymanagementapp.ui.common.BaseViewModel
 import javax.inject.Inject
 
 class HomeActivity : AppCompatActivity() {
@@ -29,5 +30,9 @@ class HomeActivity : AppCompatActivity() {
     private fun init() {
         binding.recyclerActionItems.adapter = adapter
         binding.recyclerActionItems.layoutManager = GridLayoutManager(this,3)
+        viewmodel._state.observe(this){
+            if(it==BaseViewModel.State.FINISHED)
+                finish()
+        }
     }
 }

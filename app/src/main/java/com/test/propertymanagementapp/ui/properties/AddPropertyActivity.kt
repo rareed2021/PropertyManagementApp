@@ -23,7 +23,12 @@ class AddPropertyActivity : AppCompatActivity() {
     }
 
     private fun init() {
-        viewmodel.beginAdd()
+        val property = intent.getSerializableExtra(Property.KEY) as? Property
+        if(property==null){
+            viewmodel.beginAdd()
+        }else{
+            viewmodel.beginEdit(property)
+        }
         binding.viewmodel = viewmodel
         binding.lifecycleOwner=this
         viewmodel._state.observe(this){

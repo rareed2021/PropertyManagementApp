@@ -1,10 +1,7 @@
 package com.test.propertymanagementapp.data.network
 
 import com.test.propertymanagementapp.data.models.*
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 
 interface PropertyApi {
@@ -19,4 +16,7 @@ interface PropertyApi {
 
     @POST("property")
     suspend fun addProperty(@Body property: Property):PropertyResponse
+
+    @PUT("property/{id}")
+    suspend fun updateProperty(@Path("id") id:String, @Body property: Property):PropertyResponse
 }

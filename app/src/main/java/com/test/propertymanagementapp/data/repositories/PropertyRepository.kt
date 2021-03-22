@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import com.test.propertymanagementapp.data.database.PropertyDao
 import com.test.propertymanagementapp.data.models.Property
+import com.test.propertymanagementapp.data.models.PropertyResponse
 import com.test.propertymanagementapp.data.network.PropertyApi
 import javax.inject.Inject
 
@@ -24,6 +25,10 @@ class PropertyRepository @Inject constructor(val localData:PropertyLocalDataSour
         return null
     }
     fun watchProperties(userId:String): LiveData<List<Property>> = localData.watchProperties(userId)
+    suspend fun updateProperty(property: Property) {
+        val response = remoteData.updateProperty(property)
+        localData.updateProperty(property)
+    }
 
 }
 
@@ -37,6 +42,10 @@ class PropertyRemoteDataSource @Inject constructor(private val api:PropertyApi){
         Log.d("myapp","${response.error}")
         return response.data
     }
+
+    suspend fun updateProperty(property: Property) : PropertyResponse {
+        return api.updateProperty(property.id?:"", property.copy(id=null))
+    }
 }
 
 class PropertyLocalDataSource @Inject constructor(val dao:PropertyDao){
@@ -49,6 +58,10 @@ class PropertyLocalDataSource @Inject constructor(val dao:PropertyDao){
     
     suspend fun getProperties(uid: String) :List<Property>{
         return dao.listProperties(uid).map{it.toModel()}
+    }
+
+    suspend fun updateProperty(property: Property){
+        dao.updateProperty(property.toEntity())
     }
 
     fun watchProperties(uid:String):LiveData<List<Property>>{

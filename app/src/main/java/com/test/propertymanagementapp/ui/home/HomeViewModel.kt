@@ -1,6 +1,8 @@
 package com.test.propertymanagementapp.ui.home
 
+import android.view.View
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.test.propertymanagementapp.R
 import com.test.propertymanagementapp.data.models.User
 import com.test.propertymanagementapp.data.models.enums.AccountType
@@ -13,7 +15,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlin.reflect.KClass
 
-class HomeViewModel(repository: AuthRepository) : BaseViewModel() {
+class HomeViewModel(val repository: AuthRepository) : BaseViewModel() {
 
     val actions = MutableLiveData<List<ActionIcon>>()
     val user = MutableLiveData<User>()
@@ -26,6 +28,13 @@ class HomeViewModel(repository: AuthRepository) : BaseViewModel() {
                     actions.value = landlordActions
                 }
             }
+        }
+    }
+
+    fun logout(view:View){
+        viewModelScope.launch {
+            repository.logout()
+            _state.value = State.FINISHED
         }
     }
 

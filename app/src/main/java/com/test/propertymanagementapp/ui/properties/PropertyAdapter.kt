@@ -1,5 +1,6 @@
 package com.test.propertymanagementapp.ui.properties
 
+import android.content.Intent
 import android.util.Log
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
@@ -28,12 +29,16 @@ class PropertyAdapter @Inject constructor(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(property: Property) {
             val listType = viewmodel.listType.value
-            Log.d("myapp","ListType: $listType")
-            if (listType == ListType.SELECT) {
-                binding.root.setOnClickListener {
-                    viewmodel.selectItem(property)
-                }
+            binding.root.setOnClickListener {
+                val intent = Intent(activity, AddPropertyActivity::class.java)
+                intent.putExtra(Property.KEY, property)
+                activity.startActivity(intent)
             }
+//            if (listType == ListType.SELECT) {
+//                binding.root.setOnClickListener {
+//                    viewmodel.selectItem(property)
+//                }
+//            }
         }
 
     }

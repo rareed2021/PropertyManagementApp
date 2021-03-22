@@ -11,10 +11,7 @@ import com.test.propertymanagementapp.data.models.Property
 import com.test.propertymanagementapp.data.models.PropertyResponse
 import com.test.propertymanagementapp.data.repositories.AuthRepository
 import com.test.propertymanagementapp.data.repositories.PropertyRepository
-import com.test.propertymanagementapp.ui.common.BaseViewModel
-import com.test.propertymanagementapp.ui.common.ListType
-import com.test.propertymanagementapp.ui.common.ListViewModel
-import com.test.propertymanagementapp.ui.common.logAll
+import com.test.propertymanagementapp.ui.common.*
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -76,12 +73,16 @@ class PropertyViewModel(
     fun submitProperty(view: View) {
         val property = current.value
         val issues = validator.validateNewProperty(property)
+        val type = editType.value
         _state.value = State.PENDING
         if (issues.isEmpty()) {
             viewModelScope.launch {
                 try {
                     Log.d("myapp", "Submitting property: $property")
-                    if (property != null) repository.addProperty(property)
+                    when(type){
+                        EditType.ADD ->repository.addProperty(property!!)
+                        EditType.EDIT -> repository.updateProperty(property!!)
+                    }
                     _state.value = State.FINISHED
                 } catch (e: HttpException) {
                     val response = Gson().fromJson(
