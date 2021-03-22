@@ -3,11 +3,14 @@ package com.test.propertymanagementapp.ui.properties
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.test.propertymanagementapp.R
 import com.test.propertymanagementapp.app.CustomApplication
 import com.test.propertymanagementapp.databinding.ActivityHomeBinding
 import com.test.propertymanagementapp.databinding.ActivityPropertyHomeBinding
+import com.test.propertymanagementapp.ui.common.BaseViewModel
+import com.test.propertymanagementapp.ui.common.ListType
 import com.test.propertymanagementapp.ui.home.HomeViewModel
 import javax.inject.Inject
 
@@ -15,7 +18,7 @@ import javax.inject.Inject
 class PropertyHomeActivity : AppCompatActivity() {
     lateinit var binding: ActivityPropertyHomeBinding
     @Inject
-    lateinit var viewmodel:HomeViewModel
+    lateinit var viewmodel:PropertyViewModel
     @Inject lateinit var adapter: PropertyAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {

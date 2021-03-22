@@ -1,18 +1,21 @@
 package com.test.propertymanagementapp.ui.common
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 
 abstract class ListViewModel<T>(private val creator: ()->T) : BaseViewModel() {
-    val listType = MutableLiveData<ListType>().apply{value = ListType.EDIT }
-    val editType = MutableLiveData<EditType>().apply { value = EditType.NONE }
+    val listType = MutableLiveData<ListType>()
+    val editType = MutableLiveData<EditType>()
     val current = MutableLiveData<T>()
 
     open fun setupForEditing(){
         listType.value = ListType.EDIT
+        Log.d("myapp","Called setup editing")
     }
 
     open fun setupForSelecting(){
         listType.value = ListType.SELECT
+        Log.d("myapp","Called setup selecting")
     }
 
     open fun beginEdit(editItem:T){
@@ -24,11 +27,19 @@ abstract class ListViewModel<T>(private val creator: ()->T) : BaseViewModel() {
         }
     }
 
+    open fun selectItem(selectedItem:T?){
+        Log.d("myapp","Selecting $selectedItem")
+        if(selectedItem!=null){
+            current.value=selectedItem!!
+            _state.value = State.FINISHED
+            listType.value = ListType.EDIT
+        }
+    }
+
     open fun beginAdd(){
         _state.value = State.INITIALIZED
         editType.value = EditType.ADD
         current.value = creator()
     }
-
 
 }

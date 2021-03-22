@@ -10,6 +10,7 @@ import androidx.databinding.*
 import com.bumptech.glide.Glide
 import com.test.propertymanagementapp.data.models.Todo
 import com.test.propertymanagementapp.data.models.enums.TodoPriority
+import com.test.propertymanagementapp.data.models.enums.TodoStatus
 
 
 @BindingAdapter("android:customVisibility")
@@ -148,6 +149,45 @@ class SpinnerEnumBindingAdapter : SpinnerBindingAdapter() {
             if (newSelectedValue != null) {
                 val pos =
                     (view.adapter as? ArrayAdapter<TodoPriority>)?.getPosition(newSelectedValue)
+                if (pos != null) {
+                    view.setSelection(pos, true)
+                }
+            }
+        }
+
+    }
+}
+
+
+@InverseBindingMethods(
+    InverseBindingMethod(
+        type = SpinnerStringBindingAdapter::class,
+        attribute = "android:selectedValue",
+        event = "android:selectedValueChanged",
+        method = "android:getSelectedValue"
+    )
+)
+class SpinnerTodoStatusBindingAdapter : SpinnerBindingAdapter() {
+    companion object {
+
+
+        @JvmStatic
+        @InverseBindingAdapter(
+            attribute = "android:selectedValue"
+        )
+        fun captureSelectedValue(view: Spinner): TodoStatus? {
+            return view.selectedItem as TodoStatus
+        }
+
+        @JvmStatic
+        @BindingAdapter("android:selectedValue")
+        fun setSpinner(
+            view: Spinner,
+            newSelectedValue: TodoStatus?
+        ) {
+            if (newSelectedValue != null) {
+                val pos =
+                    (view.adapter as? ArrayAdapter<TodoStatus>)?.getPosition(newSelectedValue)
                 if (pos != null) {
                     view.setSelection(pos, true)
                 }

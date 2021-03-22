@@ -13,6 +13,18 @@ class TodoRepository @Inject constructor(val db:FirebaseDatabase) {
         return db.reference.child("users/$id/todos")
     }
 
+    fun addTodo(userId:String, todo:Todo){
+        val todoRef = getTodoRef(userId).push()
+        todo.id = todoRef.key
+        todoRef.setValue(todo)
+    }
+
+    fun updateTodo(userId:String, todo: Todo){
+        val todoRef = getTodoRef(userId)
+        val id = todo.id
+        if(id!=null)
+            todoRef.child(id).setValue(todo)
+    }
     fun watchTodos(userId:String):DatabaseReference{
         return getTodoRef(userId)
     }

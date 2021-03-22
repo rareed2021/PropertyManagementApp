@@ -17,4 +17,6 @@
     <color name="pending">#444</color>
     <color name="complete">#105710</color>
     <color name="cancelled">#5C1515</color>
+    <color name="pending_tint">#FFF</color>
+    <color name="other_tint">#AAA</color>
 </resources>

@@ -1,5 +1,6 @@
 package com.test.propertymanagementapp.ui.todo
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
@@ -20,6 +21,14 @@ class TodoListAdapter @Inject constructor(val activity:AppCompatActivity, val vi
     }
 
     inner class ViewHolder(val binding:RowTodoItemBinding):RecyclerView.ViewHolder(binding.root){
+        fun bind(todo: Todo) {
+            binding.todo = todo
+            binding.root.setOnClickListener {
+                val intent = Intent(activity, AddTodoActivity::class.java)
+                intent.putExtra(Todo.KEY,todo)
+                activity.startActivity(intent)
+            }
+        }
 
     }
 
@@ -28,6 +37,7 @@ class TodoListAdapter @Inject constructor(val activity:AppCompatActivity, val vi
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(mData[position])
     }
 
     override fun getItemCount(): Int {

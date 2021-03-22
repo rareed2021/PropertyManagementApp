@@ -8,6 +8,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/background"
+    android:padding="16dp"
+    android:layout_marginBottom="4dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <TextView
         android:layout_width="wrap_content"
@@ -15,6 +18,9 @@
         android:id="@+id/text_summary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/barrier_status"
+        android:paddingStart="16dp"
+        android:textSize="16sp"
+        android:textStyle="bold"
         android:text="@{todo.summary}"
         />
     <androidx.constraintlayout.widget.Barrier
@@ -28,7 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/text_priority"
-        android:text="@{todo.priority.toString()}"
+        android:text="@{@string/priority_display(todo.priority.toString)}"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@id/text_duedate"

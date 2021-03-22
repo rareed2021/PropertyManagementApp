@@ -12,4 +12,5 @@
     <string name="city_address">%s, %s %s</string>
     <string name="add_todo_item">Add Todo Item</string>
     <string name="due_date">Due on %s</string>
+    <string name="priority_display">%s Priority</string>
 </resources>

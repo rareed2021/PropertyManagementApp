@@ -32,7 +32,9 @@ class PropertyViewModel(
         viewModelScope.launch {
             val user = auth.getUser()
             if (user != null) {
-                repository.getProperties(user._id)
+                val initialProperties = repository.getProperties(user._id)
+                properties.value = initialProperties
+                Log.d("myapp","Set watch for property")
                 properties.addSource(repository.watchProperties(user._id)) {
                     Log.d("myapp", "Getting properties: $it")
                     properties.value = it

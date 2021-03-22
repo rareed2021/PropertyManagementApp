@@ -31,21 +31,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Description"
-            android:maxLines="3"
-            android:minLines="1"
+            android:minLines="3"
             android:text="@={viewmodel.current.description}" />
+
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="16dp"
+            android:id="@+id/area_property"
             android:paddingBottom="16dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:text="Select Location" />
+                android:id="@+id/text_property"
+                android:text='@{viewmodel.current.propertyAddress ?? "Select Location"}' />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -59,6 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="16dp"
+            android:id="@+id/area_date"
             android:paddingBottom="16dp">
 
             <TextView
@@ -71,6 +74,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
+                android:id="@+id/text_due_date"
                 android:text="@{viewmodel.current.dueDateString}" />
         </RelativeLayout>
 
@@ -80,6 +84,12 @@
             android:hint="Estimated Cost"
             android:inputType="numberDecimal"
             android:text="@={viewmodel.current.estimatedCost}" />
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinner_status"
+            android:selectedValue="@={viewmodel.current.status}"
+            />
 
         <Button
             android:layout_width="match_parent"

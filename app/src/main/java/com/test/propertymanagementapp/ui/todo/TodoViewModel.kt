@@ -12,7 +12,9 @@ import com.test.propertymanagementapp.data.models.Todo
 import com.test.propertymanagementapp.data.models.TodoComparator
 import com.test.propertymanagementapp.data.repositories.AuthRepository
 import com.test.propertymanagementapp.data.repositories.TodoRepository
+import com.test.propertymanagementapp.ui.common.EditType
 import com.test.propertymanagementapp.ui.common.ListViewModel
+import com.test.propertymanagementapp.ui.common.logAll
 import kotlinx.coroutines.launch
 
 class TodoViewModel(val repository: TodoRepository, val auth: AuthRepository, val validator:TodoValidator) :
@@ -47,6 +49,26 @@ class TodoViewModel(val repository: TodoRepository, val auth: AuthRepository, va
 
 
     fun buttonClick(view: View){
-        Log.d("myapp", "adding ${current.value}")
+        viewModelScope.launch {
+            val addTodo = current.value
+            val result = validator.validateTodo(addTodo)
+            val type =editType.value
+            if (result.isEmpty()) {
+                val user = auth.getUser()
+                if(user!=null) {
+                    Log.d("myapp", "adding ${current.value}")
+                    //validator checks for null
+                    when(type){
+                        EditType.ADD->repository.addTodo(user._id, addTodo!!)
+                        EditType.EDIT->repository.updateTodo(user._id, addTodo!!)
+                    }
+
+                    _state.value = State.FINISHED
+                }
+            }else{
+                _error.value = result.first().message
+                result.logAll("add todo")
+            }
+        }
     }
 }
